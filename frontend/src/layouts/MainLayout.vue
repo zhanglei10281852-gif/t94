@@ -61,6 +61,10 @@ import {
   ShoppingCartOutlined,
   ShopOutlined,
   FileTextOutlined,
+  WalletOutlined,
+  CreditCardOutlined,
+  HistoryOutlined,
+  BarChartOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   DownOutlined,
@@ -114,6 +118,30 @@ const allMenuItems = [
     icon: FileTextOutlined,
     label: '补贴报表',
     roles: ['admin', 'worker'],
+  },
+  {
+    key: '/accounts',
+    icon: WalletOutlined,
+    label: '账户总览',
+    roles: ['admin', 'worker', 'canteen'],
+  },
+  {
+    key: '/recharge',
+    icon: CreditCardOutlined,
+    label: '充值管理',
+    roles: ['admin', 'worker'],
+  },
+  {
+    key: '/transactions',
+    icon: HistoryOutlined,
+    label: '流水查询',
+    roles: ['admin', 'worker', 'canteen'],
+  },
+  {
+    key: '/account-stats',
+    icon: BarChartOutlined,
+    label: '账户统计',
+    roles: ['admin', 'worker', 'canteen'],
   },
 ]
 

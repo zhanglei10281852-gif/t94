@@ -102,6 +102,20 @@
             <div style="color: #fa8c16; font-size: 12px">自付: ¥{{ record.selfPayAmount }}</div>
           </div>
         </template>
+        <template v-else-if="column.key === 'payment'">
+          <div>
+            <a-tag :color="record.isPaid ? 'green' : 'default'" style="margin-bottom: 4px">
+              {{ record.isPaid ? '已支付' : '未支付' }}
+            </a-tag>
+            <div v-if="record.isPaid" style="font-size: 12px; color: #666">
+              实扣: ¥{{ record.paidAmount + record.paidGiftAmount }}
+              <span v-if="record.paidGiftAmount > 0"> (赠{{ record.paidGiftAmount }})</span>
+            </div>
+            <div v-if="record.isRefunded" style="font-size: 12px; color: #fa8c16">
+              已退款: ¥{{ record.refundAmount }}
+            </div>
+          </div>
+        </template>
         <template v-else-if="column.key === 'deliveryType'">
           <div>
             {{ record.deliveryType === 'pickup' ? '到店取餐' : '送餐到家' }}
@@ -371,6 +385,7 @@ const columns = [
   { title: '餐食信息', key: 'mealInfo', width: 200 },
   { title: '配送方式', key: 'deliveryType', width: 160 },
   { title: '补贴/自付', key: 'subsidy', width: 120 },
+  { title: '支付状态', key: 'payment', width: 120 },
   { title: '状态', key: 'status', width: 100 },
   { title: '操作', key: 'action', width: 180, fixed: 'right' },
 ]

@@ -55,6 +55,56 @@ const routes: RouteRecordRaw[] = [
           roles: ["admin", "worker"],
         },
       },
+      {
+        path: "accounts",
+        name: "MealAccounts",
+        component: () => import("@/views/MealAccounts.vue"),
+        meta: {
+          title: "账户总览",
+          icon: "WalletOutlined",
+          roles: ["admin", "worker", "canteen"],
+        },
+      },
+      {
+        path: "accounts/:id",
+        name: "AccountDetail",
+        component: () => import("@/views/AccountDetail.vue"),
+        meta: {
+          title: "账户详情",
+          hidden: true,
+          roles: ["admin", "worker", "canteen"],
+        },
+      },
+      {
+        path: "recharge",
+        name: "Recharge",
+        component: () => import("@/views/Recharge.vue"),
+        meta: {
+          title: "充值管理",
+          icon: "CreditCardOutlined",
+          roles: ["admin", "worker"],
+        },
+      },
+      {
+        path: "transactions",
+        name: "TransactionRecords",
+        component: () => import("@/views/TransactionRecords.vue"),
+        meta: {
+          title: "流水查询",
+          icon: "HistoryOutlined",
+          roles: ["admin", "worker", "canteen"],
+        },
+      },
+      {
+        path: "account-stats",
+        name: "AccountStatistics",
+        component: () => import("@/views/AccountStatistics.vue"),
+        meta: {
+          title: "账户统计",
+          icon: "BarChartOutlined",
+          roles: ["admin", "worker", "canteen"],
+        },
+      },
     ],
   },
 ];

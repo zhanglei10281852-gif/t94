@@ -1,9 +1,15 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-export type MealType = 'lunch' | 'dinner';
-export type MealStandard = 'A' | 'B' | 'C';
-export type OrderStatus = 'ordered' | 'confirmed' | 'preparing' | 'ready' | 'completed' | 'cancelled';
-export type DeliveryType = 'pickup' | 'delivery';
+export type MealType = "lunch" | "dinner";
+export type MealStandard = "A" | "B" | "C";
+export type OrderStatus =
+  | "ordered"
+  | "confirmed"
+  | "preparing"
+  | "ready"
+  | "completed"
+  | "cancelled";
+export type DeliveryType = "pickup" | "delivery";
 
 export interface IDeliveryInfo {
   volunteerName: string;
@@ -25,39 +31,79 @@ export interface IOrder extends mongoose.Document {
   deliveryInfo?: IDeliveryInfo;
   subsidyAmount: number;
   selfPayAmount: number;
+  isPaid: boolean;
+  paidAmount: number;
+  paidGiftAmount: number;
+  paidAt?: Date;
+  isRefunded: boolean;
+  refundAmount: number;
+  refundedAt?: Date;
   createdBy: mongoose.Types.ObjectId;
   confirmedAt?: Date;
   completedAt?: Date;
 }
 
-const orderSchema = new mongoose.Schema<IOrder>({
-  orderNo: { type: String, required: true, unique: true },
-  elderlyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Elderly', required: true },
-  canteenId: { type: mongoose.Schema.Types.ObjectId, ref: 'Canteen', required: true },
-  mealDate: { type: Date, required: true },
-  mealType: { type: String, enum: ['lunch', 'dinner'], required: true },
-  mealStandard: { type: String, enum: ['A', 'B', 'C'], required: true },
-  mealPrice: { type: Number, required: true, min: 0 },
-  remark: { type: String, default: '' },
-  status: {
-    type: String,
-    enum: ['ordered', 'confirmed', 'preparing', 'ready', 'completed', 'cancelled'],
-    default: 'ordered',
+const orderSchema = new mongoose.Schema<IOrder>(
+  {
+    orderNo: { type: String, required: true, unique: true },
+    elderlyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Elderly",
+      required: true,
+    },
+    canteenId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Canteen",
+      required: true,
+    },
+    mealDate: { type: Date, required: true },
+    mealType: { type: String, enum: ["lunch", "dinner"], required: true },
+    mealStandard: { type: String, enum: ["A", "B", "C"], required: true },
+    mealPrice: { type: Number, required: true, min: 0 },
+    remark: { type: String, default: "" },
+    status: {
+      type: String,
+      enum: [
+        "ordered",
+        "confirmed",
+        "preparing",
+        "ready",
+        "completed",
+        "cancelled",
+      ],
+      default: "ordered",
+    },
+    deliveryType: {
+      type: String,
+      enum: ["pickup", "delivery"],
+      default: "pickup",
+    },
+    deliveryInfo: {
+      volunteerName: String,
+      estimatedTime: String,
+      actualTime: String,
+    },
+    subsidyAmount: { type: Number, required: true, default: 0 },
+    selfPayAmount: { type: Number, required: true, default: 0 },
+    isPaid: { type: Boolean, default: false },
+    paidAmount: { type: Number, default: 0 },
+    paidGiftAmount: { type: Number, default: 0 },
+    paidAt: Date,
+    isRefunded: { type: Boolean, default: false },
+    refundAmount: { type: Number, default: 0 },
+    refundedAt: Date,
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    confirmedAt: Date,
+    completedAt: Date,
   },
-  deliveryType: { type: String, enum: ['pickup', 'delivery'], default: 'pickup' },
-  deliveryInfo: {
-    volunteerName: String,
-    estimatedTime: String,
-    actualTime: String,
-  },
-  subsidyAmount: { type: Number, required: true, default: 0 },
-  selfPayAmount: { type: Number, required: true, default: 0 },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  confirmedAt: Date,
-  completedAt: Date,
-}, { timestamps: true });
+  { timestamps: true },
+);
 
 orderSchema.index({ canteenId: 1, mealDate: 1, mealType: 1, status: 1 });
 orderSchema.index({ elderlyId: 1, mealDate: 1 });
 
-export const Order = mongoose.model<IOrder>('Order', orderSchema);
+export const Order = mongoose.model<IOrder>("Order", orderSchema);
